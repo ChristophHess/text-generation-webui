@@ -1,9 +1,0 @@
-do_sample=True
-temperature=0.7
-top_p=0
-repetition_penalty=1.18
-top_k=40
-num_beams=1
-min_length=3
-length_penalty=1
-early_stopping=True

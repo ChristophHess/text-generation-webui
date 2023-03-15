@@ -257,8 +257,14 @@ def generate_reply_HF(question, original_question, seed, state, eos_token=None, 
             def generate_with_callback(callback=None, **kwargs):
                 kwargs['stopping_criteria'].append(Stream(callback_func=callback))
                 clear_torch_cache()
-                with torch.no_grad():
-                    shared.model.generate(**kwargs)
+                try:
+                    with torch.no_grad():
+                        shared.model.generate(**kwargs)
+                except RuntimeError as e:
+                    if "CUDA out of memory" in str(e):
+                        print("CUDA out of memory. Try reducing the batch size.")
+                    else:
+                        raise e
 
             def generate_with_streaming(**kwargs):
                 return Iteratorize(generate_with_callback, kwargs, callback=None)
