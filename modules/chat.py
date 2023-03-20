@@ -17,6 +17,23 @@ from modules.html_generator import chat_html_wrapper, make_thumbnail
 from modules.text_generation import (generate_reply, get_encoded_length,
                                      get_max_prompt_length)
 from modules.utils import replace_all
+import simpleaudio as sa
+import requests
+
+def play_tts(message):
+    # Make request to localhost:5002
+    # Example request /api/tts?text=test&speaker_id=p270&style_wav=&language_id=
+    audio = requests.get(f"http://localhost:5002/api/tts?text={message}&speaker_id=p270&style_wav=&language_id=")
+    # Play audio
+    wave_obj = sa.WaveObject(audio.content, 1, 2, 16000)
+    wave_obj.play()
+
+# Replace multiple string pairs in a string
+def replace_all(text, dic):
+    for i, j in dic.items():
+        text = text.replace(i, j)
+
+    return text
 
 
 def generate_chat_prompt(user_input, state, **kwargs):
@@ -222,6 +239,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False):
 
         if reply is not None:
             cumulative_reply = reply
+            play_tts(reply)
 
     yield shared.history['visible']
 
