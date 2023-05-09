@@ -22,6 +22,12 @@ Please use one-click installer from [my custom repo](https://github.com/Christop
 - [ ] Better documentation
 - [X] Let's discuss further changes in the issues 
 
+## Why?
+I feel like there are many changes that could be made to the original repo to make it more user friendly and more performant and many of which I believe not to be in line with the original authors vision.
+Since it is still the very beginning I would like to especially discuss the extensions API and the UI changes. Feel free to open issues or PRs. Maintainers are also very welcome.
+I want to use this project for my own purposes and I want to make it easier for others to use it as well.
+I will try to keep this fork up to date with the original repo, but I will not be able to test all features. If you want to use this fork, please test it thoroughly and report any issues you find.
+
 ## Original README.md:
 ___
 # Text generation web UI
