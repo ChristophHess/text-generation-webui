@@ -1,0 +1,4 @@
+pyaudio
+onnxruntime
+onnxruntime-gpu
+phonemizer
