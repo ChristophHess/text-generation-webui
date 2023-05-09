@@ -1,6 +1,8 @@
 # Text generation web UI
 An oppinionated fork of [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui)
 
+Please use one-click installer from [my custom repo](https://github.com/ChristophHess/one-click-installers.git).
+
 ## Changes
 - [ ] Streaming audio synthesis
 - [ ] Improved extension features (, etc.)
