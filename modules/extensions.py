@@ -1,5 +1,6 @@
 import logging
 import traceback
+import queue
 from functools import partial
 
 import gradio as gr
@@ -59,6 +60,12 @@ def _apply_string_extensions(function_name, text):
 
     return text
 
+# Apply string stream extensions
+def _apply_string_stream_extensions(function_name, q: queue.Queue, additional_parameters=None):
+    for extension, _ in iterator():
+        if hasattr(extension, function_name):
+            # Call the extension function with the queue as the first argument
+            getattr(extension, function_name)(q, additional_parameters)
 
 # Input hijack of extensions
 def _apply_input_hijack(text, visible_text):
@@ -71,7 +78,6 @@ def _apply_input_hijack(text, visible_text):
                 text, visible_text = extension.input_hijack['value']
 
     return text, visible_text
-
 
 # custom_generate_chat_prompt handling - currently only the first one will work
 def _apply_custom_generate_chat_prompt(text, state, **kwargs):
@@ -122,6 +128,7 @@ def _apply_custom_generate_reply():
 EXTENSION_MAP = {
     "input": partial(_apply_string_extensions, "input_modifier"),
     "output": partial(_apply_string_extensions, "output_modifier"),
+    "output_stream": partial(_apply_string_stream_extensions, "output_stream"),
     "state": _apply_state_modifier_extensions,
     "bot_prefix": partial(_apply_string_extensions, "bot_prefix_modifier"),
     "tokenizer": partial(_apply_tokenizer_extensions, "tokenizer_modifier"),

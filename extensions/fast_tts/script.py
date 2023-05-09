@@ -5,7 +5,8 @@ import gradio as gr
 import torch
 import pyaudio
 from functools import partial
-from threading import Thread
+import queue
+import subprocess
 
 from extensions.fast_tts.piper import Piper
 from extensions.fast_tts.play_audio import play
@@ -98,11 +99,29 @@ def input_modifier(string):
     return string
 
 
+def output_stream(queue: queue.Queue, additionalParameters = None):
+    """
+    This function is applied to the output text stream of the model. The input is a channel
+    """
+
+    end_token: str = additionalParameters.endToken | "<#END#>"
+    is_streaming = True
+    while is_streaming:
+        text = queue.get()
+        # If the text ends with the end token, stop the stream
+        if text.endswith(end_token):
+            is_streaming = False
+            text = text[:-len(end_token)]
+        # 'espeak', '-v', 'en-us', '-s', '120', '-p', '70'
+        subprocess.run(['espeak-ng, '-v', 'en-us', '-s', '120', '-p', '70',', text])
+
+
 def output_modifier(text):
     """
     This function is applied to the model outputs.
     """
 
+    return text
     global model, current_params, last_text
 
     original_text = text

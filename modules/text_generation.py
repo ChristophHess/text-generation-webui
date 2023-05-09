@@ -4,7 +4,7 @@ import random
 import re
 import time
 import traceback
-
+import queue
 import numpy as np
 import torch
 import transformers
@@ -179,9 +179,19 @@ def generate_reply(question, state, eos_token=None, stopping_strings=None, is_ch
     shared.stop_everything = False
     clear_torch_cache()
     seed = set_manual_seed(state['seed'])
+    output_queue = queue.Queue()
+    output_string_buffer = ''
+    apply_extensions('output_stream', output_queue, {'stopping_strings': stopping_strings, 'eos_token': eos_token})
     for reply in generate_func(question, original_question, seed, state, eos_token, stopping_strings, is_chat=is_chat):
         yield reply
-
+        # Check if we have a complete sentence in the buffer
+        output_string_buffer += reply
+        # TODO: Check for end token from model settings
+        if output_string_buffer.endswith('.'):
+            output_queue.put(output_string_buffer)
+            output_string_buffer = ''
+    # Send end token if generator is finished
+    output_queue.put("<#END#>")
 
 def generate_reply_HF(question, original_question, seed, state, eos_token=None, stopping_strings=None, is_chat=False):
     generate_params = {}
