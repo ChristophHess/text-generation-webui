@@ -1,4 +1,28 @@
 # Text generation web UI
+An oppinionated fork of [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui)
+
+## Changes
+- [ ] Streaming audio synthesis
+- [ ] Improved extension features (, etc.)
+  - [ ] Streaming of audio
+  - [ ] New listener based API
+  - ... more to come
+- [ ] Under the hood improvements
+    - [ ] Faster startup
+  - [ ] Better error handling
+- [ ] UI improvements
+  - [ ] Css Changes
+  - [ ] Performance tweaks for streaming mode
+    - [ ] Stream batches of tokens instead of single tokens
+  - [ ] Custom Frontend more in line with the likes of ChatGPT
+- [ ] LangChain support
+- [ ] Better defaults (e.g. 4-bit mode, triton, etc.)
+- [ ] Better documentation
+- [X] Let's discuss further changes in the issues 
+
+## Original README.md:
+___
+# Text generation web UI
 
 A gradio web UI for running Large Language Models like LLaMA, llama.cpp, GPT-J, Pythia, OPT, and GALACTICA.
 
